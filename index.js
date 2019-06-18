@@ -38,6 +38,7 @@ class PlaidAuthenticator extends Component {
           'token',
           'ref'
         ])}
+        style={style}
         ref={this.props.plaidRef}
         source={{ uri }}
         onMessage={this.onMessage}
