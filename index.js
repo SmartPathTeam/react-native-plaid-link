@@ -3,6 +3,12 @@ import { WebView } from 'react-native-webview';
 import { PropTypes } from 'prop-types';
 import omit from 'object.omit';
 
+const injectedJavaScript = `(function() {
+  window.postMessage = function(data) {
+    window.ReactNativeWebView.postMessage(data);
+  };
+})()`;
+
 class PlaidAuthenticator extends Component {
   render() {
     const {
@@ -14,7 +20,8 @@ class PlaidAuthenticator extends Component {
       webhook,
       style,
       token,
-      publicToken
+      publicToken,
+      countryCodes
     } = this.props;
 
     let uri = `https://cdn.plaid.com/link/v2/stable/link.html?key=${
@@ -28,6 +35,7 @@ class PlaidAuthenticator extends Component {
     uri = token !== undefined ? `${uri}&token=${token}` : uri;
     uri = webhook !== undefined ? `${uri}&webhook=${webhook}` : uri;
     uri = publicToken !== undefined ? `${uri}&token=${publicToken}` : uri;
+    uri = countryCodes !== undefined ? `${uri}&countryCodes=${countryCodes}` : uri;
 
     return (
       <WebView
@@ -37,6 +45,7 @@ class PlaidAuthenticator extends Component {
           'env',
           'product',
           'clientName',
+          'countryCodes',
           'webhook',
           'token',
           'publicToken',
@@ -47,30 +56,30 @@ class PlaidAuthenticator extends Component {
         source={{ uri }}
         onMessage={this.onMessage}
         useWebKit
+        injectedJavaScript={injectedJavaScript}
       />
     );
   }
 
-  onMessage = e => {
-    /*
-      Response example for success
-      {
-        "action": "plaid_link-undefined::connected",
-        "metadata": {
-          "account": {
-            "id": null,
-            "name": null
-          },
-          "account_id": null,
-          "public_token": "public-sandbox-e697e666-9ac2-4538-b152-7e56a4e59365",
-          "institution": {
-            "name": "Chase",
-            "institution_id": "ins_3"
-          }
+  /*
+    Response example for success
+    {
+      "action": "plaid_link-undefined::connected",
+      "metadata": {
+        "account": {
+          "id": null,
+          "name": null
+        },
+        "account_id": null,
+        "public_token": "public-sandbox-e697e666-9ac2-4538-b152-7e56a4e59365",
+        "institution": {
+          "name": "Chase",
+          "institution_id": "ins_3"
         }
       }
-    */
-
+    }
+  */
+  onMessage = e => { 
     this.props.onMessage(JSON.parse(e.nativeEvent.data));
   };
 }
@@ -83,7 +92,8 @@ PlaidAuthenticator.propTypes = {
   clientName: PropTypes.string,
   webhook: PropTypes.string,
   plaidRef: PropTypes.func,
-  publicToken: PropTypes.string
+  publicToken: PropTypes.string,
+  countryCodes: PropTypes.string
 };
 
 PlaidAuthenticator.defaultProps = {
