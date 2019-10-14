@@ -48,9 +48,10 @@ object.omit@^3.0.0:
   dependencies:
     is-extendable "^1.0.0"
 
-react-native-webview@react-native-community/react-native-webview:
+react-native-webview@^7.4.2:
   version "7.4.2"
-  resolved "https://codeload.github.com/react-native-community/react-native-webview/tar.gz/f1479ee26a2547ab405b8dd28d6d1da27e57d96c"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-7.4.2.tgz#4206ef92c95bcb7207fdade608e5f5a1f62a3f83"
+  integrity sha512-B9cKZCiQniIXlhhDwvd/GUA7HSsSNbFVkRbnvhmGjOrkBPiaK7Omq6t3/KMGxChD3o1qCsohH0Zrm0A7QUvQOg==
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"

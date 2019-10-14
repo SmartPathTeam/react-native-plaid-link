@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "object.omit": "^3.0.0",
-    "react-native-webview": "react-native-community/react-native-webview"
+    "react-native-webview": "^7.4.2"
   }
 }
